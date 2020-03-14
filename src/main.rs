@@ -35,7 +35,10 @@ fn main() {
 
         let mut cmd = Command::new("git");
         cmd.current_dir(&path);
-        cmd.arg("submodule add https://github.com/MicahHinckley/imperium");
+        cmd.arg("submodule");
+        cmd.arg("add");
+        cmd.arg("https://github.com/MicahHinckley/imperium");
+        cmd.arg("dependencies/imperium");
 
         match cmd.output() {
             Ok(_) => {}
