@@ -44,17 +44,17 @@ fn main() {
             }
         }
 
-        match fs::create_dir_all(format!("{}{}", path, "src/client")) {
+        match fs::create_dir_all(format!("{}/{}", path, "src/client")) {
             Ok(_) => {},
             Err(error) => { println!("{}", error); }
         }
 
-        match fs::create_dir_all(format!("{}{}", path, "src/server")) {
+        match fs::create_dir_all(format!("{}/{}", path, "src/server")) {
             Ok(_) => {},
             Err(error) => { println!("{}", error); }
         }
 
-        match fs::create_dir_all(format!("{}{}", path, "src/shared")) {
+        match fs::create_dir_all(format!("{}/{}", path, "src/shared")) {
             Ok(_) => {},
             Err(error) => { println!("{}", error); }
         }
