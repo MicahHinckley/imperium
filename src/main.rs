@@ -1,4 +1,8 @@
-use std::process::Command;
+use std::{
+    fs::{self},
+    process::{Command}
+};
+
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
@@ -11,20 +15,15 @@ fn main() {
     let args = Cli::from_args();
 
     if args.command == "new" {
-        println!("Creating directory...");
-
-        let mut directory = String::from("/");
-        directory.push_str(&args.name);
-
-        let result = std::fs::create_dir(directory);
+        let path = format!("./{}", &args.name);
+        let result = fs::create_dir(&path);
         match result {
             Ok(_) => {},
             Err(error) => { println!("{}", error); }
         }
 
-        // let path = std::fs::canonicalize(format!("../{}", &args.name));
         let mut cmd = Command::new("git");
-        cmd.current_dir(format!("./{}", &args.name));
+        cmd.current_dir(path);
         cmd.arg("init");
     }
 }
