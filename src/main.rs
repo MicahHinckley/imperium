@@ -33,6 +33,8 @@ fn main() {
             }
         }
 
+        let mut cmd = Command::new("git");
+        cmd.current_dir(&path);
         cmd.arg("submodule add https://github.com/MicahHinckley/imperium");
 
         match cmd.output() {
@@ -42,17 +44,17 @@ fn main() {
             }
         }
 
-        match fs::create_dir_all(format!("{}, {}", path, "src/client")) {
+        match fs::create_dir_all(format!("{}{}", path, "src/client")) {
             Ok(_) => {},
             Err(error) => { println!("{}", error); }
         }
 
-        match fs::create_dir_all(format!("{}, {}", path, "src/server")) {
+        match fs::create_dir_all(format!("{}{}", path, "src/server")) {
             Ok(_) => {},
             Err(error) => { println!("{}", error); }
         }
 
-        match fs::create_dir_all(format!("{}, {}", path, "src/shared")) {
+        match fs::create_dir_all(format!("{}{}", path, "src/shared")) {
             Ok(_) => {},
             Err(error) => { println!("{}", error); }
         }
