@@ -25,5 +25,12 @@ fn main() {
         let mut cmd = Command::new("git");
         cmd.current_dir(path);
         cmd.arg("init");
+
+        match cmd.output() {
+            Ok(_) => {}
+            Err(e) => {
+                println!("{}", e);
+            }
+        }
     }
 }
