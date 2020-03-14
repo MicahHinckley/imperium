@@ -11,6 +11,8 @@ fn main() {
     let args = Cli::from_args();
 
     if args.command == "new" {
+        println!("Creating directory...");
+
         let mut directory = String::from("/");
         directory.push_str(&args.name);
 
