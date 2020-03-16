@@ -1,6 +1,7 @@
 use std::{
-    fs::{self},
-    process::{Command}
+    fs::{self, File},
+    process::{Command},
+    io::prelude::*
 };
 
 use structopt::StructOpt;
@@ -61,5 +62,15 @@ fn main() {
             Ok(_) => {},
             Err(error) => { println!("{}", error); }
         }
+
+        let mut project_file = File::open("templates/default.project.json").expect("Can't open file!");
+        let mut contents = String::new();
+        project_file.read_to_string(&mut contents)
+            .expect("Can't read the file!");
+
+        contents = contents.replace("replace", &args.name);
+
+        let mut file = File::create("default.project.json").expect("Can't create file!");
+        file.write_all(contents.as_bytes()).expect("Can't write to file.");
     }
 }
