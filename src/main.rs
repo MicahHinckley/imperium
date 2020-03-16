@@ -67,7 +67,7 @@ fn main() {
 
         let contents = PROJECT.replace("replace", &args.name);
 
-        let mut file = File::create("default.project.json").expect("Can't create file!");
+        let mut file = File::create(path + "/default.project.json").expect("Can't create file!");
         file.write_all(contents.as_bytes()).expect("Can't write to file.");
     }
 }
