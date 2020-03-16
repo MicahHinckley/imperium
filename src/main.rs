@@ -12,7 +12,7 @@ struct Cli {
     name: String
 }
 
-static PROJECT: &str = include_str!("./templates/default.project.json");
+static PROJECT: &str = include_str!("/templates/default.project.json");
 
 fn main() {
     let args = Cli::from_args();
