@@ -63,7 +63,7 @@ fn main() {
             Err(error) => { println!("{}", error); }
         }
 
-        let mut project_file = File::open("templates/default.project.json").expect("Can't open file!");
+        let mut project_file = File::open("./templates/default.project.json").expect("Can't open file!");
         let mut contents = String::new();
         project_file.read_to_string(&mut contents)
             .expect("Can't read the file!");
