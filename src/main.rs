@@ -67,9 +67,10 @@ fn init() -> Result<(), Error> {
     try_add_dependency(&base_path)?;
 
     try_create_src(&base_path)?;
-    
-    let name = &base_path.canonicalize().expect("Could not canonicalize base path.").file_name().expect("Could not find file name.").to_str().expect("Could not convert to `&str`")
-    try_create_project(&base_path, name)?;
+
+    let canonicalized_path = &base_path.canonicalize().expect("Could not canonicalize base path.");
+    let file_name = canonicalized_path.file_name().expect("Could not find file name.").to_string_lossy();
+    try_create_project(&base_path, &file_name)?;
 
     Ok(())
 }
