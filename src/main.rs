@@ -32,22 +32,22 @@ fn new(name: &str) -> Result<(), Error> {
     try_git_init(&base_path)?;
     try_add_dependency(&base_path)?;
 
-    let src = base_path.join("src");
+    let src = base_path.join("/src");
     fs::create_dir_all(&src)?;
 
-    let src_shared = src.join("shared");
+    let src_shared = src.join("/shared");
     fs::create_dir_all(src.join(&src_shared))?;
 
-    let src_server = src.join("server");
+    let src_server = src.join("/server");
     fs::create_dir_all(src.join(&src_server))?;
 
-    let src_client = src.join("client");
+    let src_client = src.join("/client");
     fs::create_dir_all(src.join(&src_client))?;
 
     let contents = PROJECT.replace("replace", name);
     let mut file = File::create(&base_path.join("/default.project.json"))?;
     file.write_all(contents.as_bytes())?;
-    
+
     Ok(())
 }
 
