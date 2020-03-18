@@ -1,73 +1,63 @@
-use std::{
-    fs::{self, File},
-    process::{Command},
-    io::prelude::*
-};
-
+use std::{fs, fs::File, path::Path, process::Command, result::Result, io::Error, io::Write};
 use structopt::StructOpt;
-
-#[derive(StructOpt)]
-struct Cli {
-    command: String,
-    name: String
-}
 
 static PROJECT: &str = include_str!("../templates/default.project.json");
 
+#[derive(StructOpt)]
+enum Subcommand {
+    New {
+        name: String
+    }
+}
+
+fn try_git_init(path: &Path) -> Result<(), Error> {
+    Command::new("git").arg("init").current_dir(path).output()?;
+
+    Ok(())
+}
+
+fn try_add_dependency(path: &Path) -> Result<(), Error> {
+    Command::new("git").arg("submodule").arg("add").arg("https://github.com/MicahHinckley/imperium").arg("dependencies/imperium").current_dir(path).output()?;
+
+    Ok(())
+}
+
+fn new(name: &str) -> Result<(), Error> {
+    let path = format!("./{}", name);
+    let base_path = Path::new(&path);
+    fs::create_dir_all(&base_path)?;
+
+    try_git_init(&base_path)?;
+    try_add_dependency(&base_path)?;
+
+    let src = base_path.join("src");
+    fs::create_dir_all(&src)?;
+
+    let src_shared = src.join("shared");
+    fs::create_dir_all(src.join(&src_shared))?;
+
+    let src_server = src.join("server");
+    fs::create_dir_all(src.join(&src_server))?;
+
+    let src_client = src.join("client");
+    fs::create_dir_all(src.join(&src_client))?;
+
+    let contents = PROJECT.replace("replace", name);
+    let mut file = File::create(base_path.join("/default.project.json"))?;
+    file.write_all(contents.as_bytes())?;
+
+    Ok(())
+}
+
 fn main() {
-    let args = Cli::from_args();
-
-    if args.command == "new" {
-        let path = format!("./{}", &args.name);
-        let result = fs::create_dir(&path);
-        match result {
-            Ok(_) => {},
-            Err(error) => { println!("{}", error); }
+    match Subcommand::from_args() {
+        Subcommand::New { name } => {
+            match new(&name) {
+                Err(error) => {
+                    panic!("[ERROR]: {}", error);
+                },
+                Ok(_) => ()
+            };
         }
-
-        let mut cmd = Command::new("git");
-        cmd.current_dir(&path);
-        cmd.arg("init");
-
-        match cmd.output() {
-            Ok(_) => {}
-            Err(e) => {
-                println!("{}", e);
-            }
-        }
-
-        let mut cmd = Command::new("git");
-        cmd.current_dir(&path);
-        cmd.arg("submodule");
-        cmd.arg("add");
-        cmd.arg("https://github.com/MicahHinckley/imperium");
-        cmd.arg("dependencies/imperium");
-
-        match cmd.output() {
-            Ok(_) => {}
-            Err(e) => {
-                println!("{}", e);
-            }
-        }
-
-        match fs::create_dir_all(format!("{}/{}", path, "src/client")) {
-            Ok(_) => {},
-            Err(error) => { println!("{}", error); }
-        }
-
-        match fs::create_dir_all(format!("{}/{}", path, "src/server")) {
-            Ok(_) => {},
-            Err(error) => { println!("{}", error); }
-        }
-
-        match fs::create_dir_all(format!("{}/{}", path, "src/shared")) {
-            Ok(_) => {},
-            Err(error) => { println!("{}", error); }
-        }
-
-        let contents = PROJECT.replace("replace", &args.name);
-
-        let mut file = File::create(path + "/default.project.json").expect("Can't create file!");
-        file.write_all(contents.as_bytes()).expect("Can't write to file.");
     }
 }
