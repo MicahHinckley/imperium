@@ -1,5 +1,5 @@
 --< Services >--
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
     
---< Modules >--
-local Import = require(ReplicatedStorage.Import)
+--< Start >--
+require(ReplicatedStorage.Import)
