@@ -8,7 +8,9 @@ enum Subcommand {
     #[structopt(name = "new")]
     New {
         name: String
-    }
+    },
+    #[structopt(name = "init")]
+    Init
 }
 
 fn try_git_init(path: &Path) -> Result<(), Error> {
@@ -23,6 +25,25 @@ fn try_add_dependency(path: &Path) -> Result<(), Error> {
     Ok(())
 }
 
+fn try_create_src(path: &Path) -> Result<(), Error> {
+    let src = path.join("src");
+    fs::create_dir_all(&src)?;
+
+    fs::create_dir_all(&src.join("shared"))?;
+    fs::create_dir_all(&src.join("server"))?;
+    fs::create_dir_all(&src.join("client"))?;
+
+    Ok(())
+}
+
+fn try_create_project(path: &Path, name: &str) -> Result<(), Error> {
+    let contents = PROJECT.replace("replace", name);
+    let mut file = File::create(path.join("default.project.json"))?;
+    file.write_all(contents.as_bytes())?;
+
+    Ok(())
+}
+
 fn new(name: &str) -> Result<(), Error> {
     let path = format!("./{}", name);
     let base_path = Path::new(&path);
@@ -32,16 +53,23 @@ fn new(name: &str) -> Result<(), Error> {
     try_git_init(&base_path)?;
     try_add_dependency(&base_path)?;
 
-    let src = base_path.join("src");
-    fs::create_dir_all(&src)?;
+    try_create_src(&base_path)?;
 
-    fs::create_dir_all(&src.join("shared"))?;
-    fs::create_dir_all(&src.join("server"))?;
-    fs::create_dir_all(&src.join("client"))?;
+    try_create_project(&base_path, name)?;
 
-    let contents = PROJECT.replace("replace", name);
-    let mut file = File::create(&base_path.join("default.project.json"))?;
-    file.write_all(contents.as_bytes())?;
+    Ok(())
+}
+
+fn init() -> Result<(), Error> {
+    let base_path = Path::new("./");
+
+    try_git_init(&base_path)?;
+    try_add_dependency(&base_path)?;
+
+    try_create_src(&base_path)?;
+    
+    let name = base_path.file_name().unwrap().to_str();
+    try_create_project(&base_path, name.unwrap())?;
 
     Ok(())
 }
@@ -54,7 +82,15 @@ fn main() {
                     panic!("[ERROR]: {}", error);
                 },
                 Ok(_) => ()
-            };
+            }
+        },
+        Subcommand::Init => {
+            match init() {
+                Err(error) => {
+                    panic!("[ERROR]: {}", error);
+                },
+                Ok(_) => ()
+            }
         }
     }
 }
