@@ -27,41 +27,27 @@ fn new(name: &str) -> Result<(), Error> {
     let path = format!("./{}", name);
     let base_path = Path::new(&path);
 
-    println!("{}", base_path.canonicalize().unwrap().display());
-
     fs::create_dir_all(&base_path)?;
-
-    println!("{}", base_path.canonicalize().unwrap().display());
 
     try_git_init(&base_path)?;
     try_add_dependency(&base_path)?;
 
-    println!("{}", base_path.canonicalize().unwrap().display());
-
     let src = base_path.join("src");
     fs::create_dir_all(&src)?;
-
-    println!("{}", base_path.canonicalize().unwrap().display());
 
     let src_shared = src.join("shared");
     fs::create_dir_all(src.join(&src_shared))?;
 
-    println!("{}", base_path.canonicalize().unwrap().display());
-
     let src_server = src.join("server");
     fs::create_dir_all(src.join(&src_server))?;
-
-    println!("{}", base_path.canonicalize().unwrap().display());
 
     let src_client = src.join("client");
     fs::create_dir_all(src.join(&src_client))?;
 
-    println!("{}", base_path.canonicalize().unwrap().display());
-
     let contents = PROJECT.replace("replace", name);
-    let mut file = File::create(base_path.join("/default.project.json"))?;
+    let mut file = File::create(&base_path.join("/default.project.json"))?;
     file.write_all(contents.as_bytes())?;
-
+    
     Ok(())
 }
 
