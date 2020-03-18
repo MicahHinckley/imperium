@@ -68,7 +68,7 @@ fn init() -> Result<(), Error> {
 
     try_create_src(&base_path)?;
 
-    let name = base_path.file_name().expect("Could not get file name.").to_str().expect("Could not convert to `&str`");
+    let name = &base_path.file_name().expect("Could not get file name.").to_str().expect("Could not convert to `&str`");
     try_create_project(&base_path, name)?;
 
     Ok(())
