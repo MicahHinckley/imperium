@@ -5,6 +5,7 @@ static PROJECT: &str = include_str!("../templates/default.project.json");
 
 #[derive(StructOpt)]
 enum Subcommand {
+    #[structopt(name = "new")]
     New {
         name: String
     }
@@ -41,6 +42,8 @@ fn new(name: &str) -> Result<(), Error> {
 
     let src_client = src.join("client");
     fs::create_dir_all(src.join(&src_client))?;
+
+    println!("{}", base_path.display());
 
     let contents = PROJECT.replace("replace", name);
     let mut file = File::create(base_path.join("/default.project.json"))?;
