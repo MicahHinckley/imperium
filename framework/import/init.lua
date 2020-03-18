@@ -17,8 +17,8 @@ local ModuleLookup = {}
 --< Functions >--
 local function AddLocation(location)
     for _,descendant in ipairs(location:GetDescendants()) do
-        if (descendant:IsA("ModuleScript") and descendant:FindFirstAncestorOfClass("ModuleScript") == nil) then
-            if (ModuleLookup[descendant.Name]) then
+        if descendant:IsA("ModuleScript") and descendant:FindFirstAncestorOfClass("ModuleScript") == nil then
+            if ModuleLookup[descendant.Name] then
                 error("Module '" .. descendant.Name .. "' already exists.")
             else
                 ModuleLookup[descendant.Name] = descendant
@@ -28,17 +28,17 @@ local function AddLocation(location)
 end
 
 --< Initialize >--
-if (RunService:IsServer()) then
+if RunService:IsServer() then
     AddLocation(LOCATIONS.Server)
     AddLocation(LOCATIONS.Shared)
-elseif (RunService:IsClient()) then
+elseif RunService:IsClient() then
     AddLocation(LOCATIONS.Client)
     AddLocation(LOCATIONS.Shared)
 end
 
 --< Module >--
 local function Import(identifier)
-    if (ModuleLookup[identifier]) then
+    if ModuleLookup[identifier] then
         return require(ModuleLookup[identifier])
     else
         error("'" .. identifier .. "' does not exist.")
