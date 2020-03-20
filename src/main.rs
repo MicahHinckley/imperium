@@ -10,7 +10,9 @@ enum Subcommand {
         name: String
     },
     #[structopt(name = "init")]
-    Init
+    Init,
+    #[structopt(name = "update")]
+    Update
 }
 
 fn try_git_init(path: &Path) -> Result<(), Error> {
@@ -21,6 +23,12 @@ fn try_git_init(path: &Path) -> Result<(), Error> {
 
 fn try_add_dependency(path: &Path) -> Result<(), Error> {
     Command::new("git").arg("submodule").arg("add").arg("https://github.com/MicahHinckley/imperium").arg("dependencies/imperium").current_dir(path).output()?;
+
+    Ok(())
+}
+
+fn try_git_update(path: &Path) -> Result<(), Error> {
+    Command::new("git").arg("submodule").arg("update").arg("--remote").current_dir(path).output()?;
 
     Ok(())
 }
@@ -75,6 +83,14 @@ fn init() -> Result<(), Error> {
     Ok(())
 }
 
+fn update() -> Result<(), Error> {
+    let base_path = Path::new("./");
+
+    try_git_update(&base_path)?;
+
+    Ok(())
+}
+
 fn main() {
     match Subcommand::from_args() {
         Subcommand::New { name } => {
@@ -87,6 +103,14 @@ fn main() {
         },
         Subcommand::Init => {
             match init() {
+                Err(error) => {
+                    panic!("[ERROR]: {}", error);
+                },
+                Ok(_) => ()
+            }
+        },
+        Subcommand::Update => {
+            match update() {
                 Err(error) => {
                     panic!("[ERROR]: {}", error);
                 },
