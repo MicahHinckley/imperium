@@ -7,13 +7,6 @@ local RunService = game:GetService("RunService")
 --< Modules >--
 local Log = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Log"))
 
---< Constants >--
-local LOCATIONS = {
-    Client = StarterPlayer:WaitForChild("StarterPlayerScripts"):WaitForChild("Client");
-    Server = ServerScriptService:WaitForChild("Server");
-    Shared = ReplicatedStorage:WaitForChild("Shared");
-}
-
 --< Variables >--
 local ModuleLookup = {}
 
@@ -32,11 +25,11 @@ end
 
 --< Initialize >--
 if RunService:IsServer() then
-    AddLocation(LOCATIONS.Server)
-    AddLocation(LOCATIONS.Shared)
+    AddLocation(ServerScriptService.Server)
+    AddLocation(ReplicatedStorage.Shared)
 elseif RunService:IsClient() then
-    AddLocation(LOCATIONS.Client)
-    AddLocation(LOCATIONS.Shared)
+    AddLocation(StarterPlayer:WaitForChild("StarterPlayerScripts"):WaitForChild("Client"))
+    AddLocation(ReplicatedStorage:WaitForChild("Shared"))
 end
 
 --< Module >--
