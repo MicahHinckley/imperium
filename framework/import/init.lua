@@ -10,6 +10,8 @@ local Log = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Log")
 --< Variables >--
 local ModuleLookup = {}
 
+-- test
+
 --< Functions >--
 local function AddLocation(location)
     for _,descendant in ipairs(location:GetDescendants()) do
