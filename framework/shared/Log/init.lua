@@ -1,13 +1,6 @@
 --< Modules >--
 local Display = require(script.Display)
 
---< Constants >--
-local NON_WARN_INDENT = "                                     "
-
---< Variables >--
-local InfoPrefix = string.format("%s[INFO]     ", NON_WARN_INDENT)
-local WarnPrefix = "[WARN]  "
-
 --< Functions >--
 local function BetterFormat(template, ...)
     local Values = {...}
@@ -35,17 +28,17 @@ local Log = {}
 
 function Log.Error(template, ...)
     local Message = BetterFormat(template, ...)
-    error(Message)
+    error(Message, 2)
 end
 
 function Log.Warn(template, ...)
     local Message = BetterFormat(template, ...)
-    warn(WarnPrefix .. Message)
+    warn(Message)
 end
 
 function Log.Info(template, ...)
     local Message = BetterFormat(template, ...)
-    print(InfoPrefix .. Message)
+    print(Message)
 end
 
 return Log
