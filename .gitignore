@@ -1,6 +1,9 @@
 places/
 examples/
 
+# Roblox std
+/roblox.toml
+
 #Added by cargo
 
 /target
