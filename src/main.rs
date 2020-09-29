@@ -42,10 +42,10 @@ fn try_create_src(path: &Path) -> Result<(), Error> {
     fs::create_dir_all(&src.join("shared"))?;
 
     let src_client = src.join("client");
-    fs::create_dir_all(src.join(&src_client))?;
+    fs::create_dir_all(&src_client)?;
 
     let src_server = src.join("server");
-    fs::create_dir_all(src.join(&src_server))?;
+    fs::create_dir_all(&src_server)?;
 
     let mut client_file = File::create(src_client.join("init.client.lua"))?;
     client_file.write_all(CLIENT_INIT.as_bytes())?;
