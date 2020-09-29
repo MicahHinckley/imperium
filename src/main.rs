@@ -4,6 +4,8 @@ use structopt::StructOpt;
 static PROJECT: &str = include_str!("../templates/default.project.json");
 static CLIENT_INIT: &str = include_str!("../templates/init.client.lua");
 static SERVER_INIT: &str = include_str!("../templates/init.server.lua");
+static GIT_IGNORE: &str = include_str!("../templates/gitignore.txt");
+static SELENE_CONFIG: &str = include_str!("../templates/selene.toml");
 
 #[derive(StructOpt)]
 enum Subcommand {
@@ -75,6 +77,20 @@ fn try_create_project(path: &Path, name: &str) -> Result<(), Error> {
     Ok(())
 }
 
+fn try_create_git_ignore(path: &Path) -> Result<(), Error> {
+    let mut file = File::create(path.join(".gitignore"))?;
+    file.write_all(GIT_IGNORE.as_bytes())?;
+
+    Ok(())
+}
+
+fn try_create_selene_config(path: &Path) -> Result<(), Error> {
+    let mut file = File::create(path.join("selene.toml"))?;
+    file.write_all(SELENE_CONFIG.as_bytes())?;
+
+    Ok(())
+}
+
 fn new(name: &str) -> Result<(), Error> {
     let path = format!("./{}", name);
     let base_path = Path::new(&path);
@@ -84,6 +100,9 @@ fn new(name: &str) -> Result<(), Error> {
     try_create_src(&base_path)?;
 
     try_create_project(&base_path, name)?;
+
+    try_create_git_ignore(&base_path)?;
+    try_create_selene_config(&base_path)?;
 
     try_git_init(&base_path)?;
     try_add_dependencies(&base_path)?;
@@ -99,6 +118,9 @@ fn init() -> Result<(), Error> {
     let canonicalized_path = &base_path.canonicalize().expect("Could not canonicalize base path.");
     let file_name = canonicalized_path.file_name().expect("Could not find file name.").to_string_lossy();
     try_create_project(&base_path, &file_name)?;
+
+    try_create_git_ignore(&base_path)?;
+    try_create_selene_config(&base_path)?;
 
     try_git_init(&base_path)?;
     try_add_dependencies(&base_path)?;
