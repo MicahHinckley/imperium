@@ -1,32 +1,28 @@
 {
-    "name": "replace",
-    "tree": {
-      "$className": "DataModel",
-      "ReplicatedStorage": {
-        "$className": "ReplicatedStorage",
-        "Shared": {
-          "$path": "src/shared"
-        },
-        "Import": {"$path": "dependencies/imperium/src/import"}
+  "name": "replace",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Shared": {
+        "$path": "src/shared"
       },
-      "ServerScriptService": {
-        "$className": "ServerScriptService",
-        "Server": {
-          "$path": "dependencies/imperium/src/server",
-  
-          "Source": {"$path": "src/server"}
-        }
-      },
-      "StarterPlayer": {
-        "$className": "StarterPlayer",
-        "StarterPlayerScripts": {
-          "$className": "StarterPlayerScripts",
-          "Client": {
-            "$path": "dependencies/imperium/src/client",
-  
-            "Source": {"$path": "src/client"}
-          }
+      "Import": {"$path": "dependencies/imperium/dependencies/import"}
+    },
+    "ServerScriptService": {
+      "Server": {
+        "$path": "dependencies/imperium/src/server",
+
+        "Source": {"$path": "src/server"}
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "Client": {
+          "$path": "dependencies/imperium/src/client",
+
+          "Source": {"$path": "src/client"}
         }
       }
     }
   }
+}
