@@ -23,8 +23,19 @@ fn try_git_init(path: &Path) -> Result<(), Error> {
     Ok(())
 }
 
-fn try_add_dependency(path: &Path) -> Result<(), Error> {
-    Command::new("git").arg("submodule").arg("add").arg("https://github.com/Nezuo/imperium").arg("dependencies/imperium").current_dir(path).output()?;
+fn try_add_dependency(root: &Path, path: &str, link: &str) -> Result<(), Error> {
+    Command::new("git").arg("submodule").arg("add").arg(link).arg(path).current_dir(root).output()?;
+
+    Ok(())
+}
+
+fn try_add_dependencies(path: &Path) -> Result<(), Error> {
+    try_add_dependency(path, "dependencies/imperium", "https://github.com/Nezuo/imperium")?;
+    try_add_dependency(path, "dependencies/import", "https://github.com/Nezuo/import")?;
+    try_add_dependency(path, "dependencies/roact", "https://github.com/Roblox/roact")?;
+    try_add_dependency(path, "dependencies/rodux", "https://github.com/Roblox/rodux")?;
+    try_add_dependency(path, "dependencies/roact-rodux", "https://github.com/Roblox/roact-rodux")?;
+    try_add_dependency(path, "dependencies/t", "https://github.com/osyrisrblx/t")?;
 
     Ok(())
 }
@@ -75,7 +86,7 @@ fn new(name: &str) -> Result<(), Error> {
     try_create_project(&base_path, name)?;
 
     try_git_init(&base_path)?;
-    try_add_dependency(&base_path)?;
+    try_add_dependencies(&base_path)?;
 
     Ok(())
 }
@@ -90,7 +101,7 @@ fn init() -> Result<(), Error> {
     try_create_project(&base_path, &file_name)?;
 
     try_git_init(&base_path)?;
-    try_add_dependency(&base_path)?;
+    try_add_dependencies(&base_path)?;
 
     Ok(())
 }
