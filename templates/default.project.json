@@ -4,22 +4,21 @@
     "$className": "DataModel",
     "ReplicatedStorage": {
       "Shared": {
-        "$path": "src/shared"
+        "$path": "dependencies/imperium/framework/shared",
+
+        "Source": {"$path": "src/shared"}
       },
+      "Imperium": {"$path": "dependencies/imperium/framework/Imperium.lua"},
       "Import": {"$path": "dependencies/imperium/dependencies/import"}
     },
     "ServerScriptService": {
       "Server": {
-        "$path": "dependencies/imperium/src/server",
-
         "Source": {"$path": "src/server"}
       }
     },
     "StarterPlayer": {
       "StarterPlayerScripts": {
         "Client": {
-          "$path": "dependencies/imperium/src/client",
-
           "Source": {"$path": "src/client"}
         }
       }
