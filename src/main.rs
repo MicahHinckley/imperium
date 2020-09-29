@@ -2,6 +2,8 @@ use std::{fs, fs::File, path::Path, process::Command, result::Result, io::Error,
 use structopt::StructOpt;
 
 static PROJECT: &str = include_str!("../templates/default.project.json");
+static CLIENT_INIT: &str = include_str!("../templates/init.client.lua");
+static SERVER_INIT: &str = include_str!("../templates/init.server.lua");
 
 #[derive(StructOpt)]
 enum Subcommand {
@@ -22,7 +24,7 @@ fn try_git_init(path: &Path) -> Result<(), Error> {
 }
 
 fn try_add_dependency(path: &Path) -> Result<(), Error> {
-    Command::new("git").arg("submodule").arg("add").arg("https://github.com/MicahHinckley/imperium").arg("dependencies/imperium").current_dir(path).output()?;
+    Command::new("git").arg("submodule").arg("add").arg("https://github.com/Nezuo/imperium").arg("dependencies/imperium").current_dir(path).output()?;
 
     Ok(())
 }
@@ -38,8 +40,18 @@ fn try_create_src(path: &Path) -> Result<(), Error> {
     fs::create_dir_all(&src)?;
 
     fs::create_dir_all(&src.join("shared"))?;
-    fs::create_dir_all(&src.join("server"))?;
-    fs::create_dir_all(&src.join("client"))?;
+
+    let src_client = src.join("client");
+    fs::create_dir_all(src.join(&src_client))?;
+
+    let src_server = src.join("server");
+    fs::create_dir_all(src.join(&src_server))?;
+
+    let mut client_file = File::create(src_client.join("init.client.lua"))?;
+    client_file.write_all(CLIENT_INIT.as_bytes())?;
+    
+    let mut server_file = File::create(src_server.join("init.server.lua"))?;
+    server_file.write_all(SERVER_INIT.as_bytes())?;
 
     Ok(())
 }
@@ -58,12 +70,12 @@ fn new(name: &str) -> Result<(), Error> {
 
     fs::create_dir_all(&base_path)?;
 
-    try_git_init(&base_path)?;
-    try_add_dependency(&base_path)?;
-
     try_create_src(&base_path)?;
 
     try_create_project(&base_path, name)?;
+
+    try_git_init(&base_path)?;
+    try_add_dependency(&base_path)?;
 
     Ok(())
 }
@@ -71,14 +83,14 @@ fn new(name: &str) -> Result<(), Error> {
 fn init() -> Result<(), Error> {
     let base_path = Path::new("./");
 
-    try_git_init(&base_path)?;
-    try_add_dependency(&base_path)?;
-
     try_create_src(&base_path)?;
 
     let canonicalized_path = &base_path.canonicalize().expect("Could not canonicalize base path.");
     let file_name = canonicalized_path.file_name().expect("Could not find file name.").to_string_lossy();
     try_create_project(&base_path, &file_name)?;
+
+    try_git_init(&base_path)?;
+    try_add_dependency(&base_path)?;
 
     Ok(())
 }
