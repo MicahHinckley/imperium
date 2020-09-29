@@ -10,3 +10,6 @@
 [submodule "dependencies/roact-rodux"]
 	path = dependencies/roact-rodux
 	url = https://github.com/Roblox/roact-rodux
+[submodule "dependencies/import"]
+	path = dependencies/import
+	url = https://github.com/Nezuo/import
