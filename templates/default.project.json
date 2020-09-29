@@ -6,19 +6,27 @@
       "Shared": {
         "$path": "dependencies/imperium/framework/shared",
 
+        "t": {"$path": "dependencies/t/lib"},
+        "Roact": {"$path": "dependencies/roact/src"},
+        "Rodux": {"$path": "dependencies/rodux/src"},
+        "RoactRodux": {"$path": "dependencies/roact-rodux/src"},
         "Source": {"$path": "src/shared"}
       },
       "Imperium": {"$path": "dependencies/imperium/framework/Imperium.lua"},
-      "Import": {"$path": "dependencies/imperium/dependencies/import"}
+      "Import": {"$path": "dependencies/import/src"}
     },
     "ServerScriptService": {
       "Server": {
+        "$className": "Folder",
+
         "Source": {"$path": "src/server"}
       }
     },
     "StarterPlayer": {
       "StarterPlayerScripts": {
         "Client": {
+          "$className": "Folder",
+
           "Source": {"$path": "src/client"}
         }
       }
