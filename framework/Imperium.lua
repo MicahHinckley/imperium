@@ -1,28 +1,28 @@
 --< Module >--
 local Imperium = {}
 
-function Imperium:Start(services)
-    local ServiceCache = {}
+function Imperium:Start(systems)
+    local SystemCache = {}
 
-    for _,descendant in ipairs(services:GetChildren()) do
+    for _,descendant in ipairs(systems:GetChildren()) do
         if descendant:IsA("ModuleScript") and descendant:FindFirstAncestorOfClass("ModuleScript") == nil then
-            local Service = require(descendant)
+            local System = require(descendant)
 
-            if Service.Initialize then
-                Service:Initialize()
+            if System.Initialize then
+                System:Initialize()
             end
 
-            table.insert(ServiceCache, Service)
+            table.insert(SystemCache, System)
         end
     end
 
-    for _,service in ipairs(ServiceCache) do
-        if service.Start then
+    for _,system in ipairs(SystemCache) do
+        if system.Start then
             -- spawn thread and call start
         end
     end
 
-    return ServiceCache
+    return SystemCache
 end
 
 return Imperium
