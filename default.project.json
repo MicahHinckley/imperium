@@ -1,13 +1,10 @@
 {
-  "name": "Imperium",
+  "name": "imperium",
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
       "Shared": {
         "$path": "framework/shared"
-      },
-      "Import": {
-        "$path": "framework/import"
       }
     },
     "ServerScriptService": {
