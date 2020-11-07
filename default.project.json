@@ -4,19 +4,26 @@
     "$className": "DataModel",
     "ReplicatedStorage": {
       "Shared": {
-        "$path": "framework/shared"
-      }
-    },
-    "ServerScriptService": {
-      "Server": {
-        "$path": "framework/server"
-      }
-    },
-    "StarterPlayer": {
-      "StarterPlayerScripts": {
-        "Client": {
-          "$path": "framework/client"
+        "$className": "Folder",
+
+        "Imperium": {
+          "$path": "framework/shared",
+
+          "Asink": {"$path": "dependencies/asink/src"}
         }
+      },
+      "Imperium": {"$path": "framework/Imperium.lua"},
+      "TestEZ": {"$path": "dependencies/testez/src"}
+    },
+    "TestService": {
+      "$className": "TestService",
+
+      "$properties": {
+        "ExecuteWithStudioRun": true
+      },
+
+      "Test": {
+        "$path": "test"
       }
     }
   }

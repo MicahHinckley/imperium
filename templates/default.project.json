@@ -9,6 +9,7 @@
         "Imperium": {
           "$path": "dependencies/imperium/framework/shared",
 
+          "Asink": {"$path": "dependencies/asink/src"},
           "t": {"$path": "dependencies/t/lib"},
           "Roact": {"$path": "dependencies/roact/src"},
           "Rodux": {"$path": "dependencies/rodux/src"},

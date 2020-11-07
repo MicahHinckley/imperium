@@ -1,5 +1,8 @@
+--< Services >--
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 --< Modules >--
-local Asink = {}
+local Asink = require(ReplicatedStorage.Shared.Imperium.Asink)
 
 --< Functions >--
 local function InitializeSystem(system)
@@ -25,7 +28,7 @@ local function InitializeSystems(systems)
                 local System = require(descendant)
     
                 if System.Initialize ~= nil then
-                    local InitializeJob = InitializeSystem()
+                    local InitializeJob = InitializeSystem(System)
 
                     table.insert(InitializeJobs, InitializeJob)
                 end
@@ -46,7 +49,9 @@ end
 local Imperium = {}
 
 function Imperium:Start(systems)
-    return InitializeSystems(systems):andThen(function(systemCache)
+    local Future = InitializeSystems(systems)
+
+    Future:map(function(systemCache)
         for _,system in ipairs(systemCache) do
             if system.Start ~= nil then
                 Asink.Runtime.exec(function()
@@ -55,6 +60,8 @@ function Imperium:Start(systems)
             end
         end
     end)
+
+    return Future
 end
 
 return Imperium
