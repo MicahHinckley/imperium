@@ -1,9 +1,12 @@
-places/
-examples/
+# Project place file
+/imperium.rbxlx
 
 # Roblox std
 /roblox.toml
 
-#Added by cargo
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
 
+# Added by cargo
 /target
