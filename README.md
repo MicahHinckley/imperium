@@ -8,7 +8,7 @@ Imperium can be installed with Foreman, a toolchain manager for roblox projects:
 
 ```toml
 [tools]
-imperium = { source = "Nezuo/imperium", version = "0.9.1" }
+imperium = { source = "Nezuo/imperium", version = "0.9.2" }
 ```
 
 ### From GitHub Releases
