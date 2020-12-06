@@ -1,96 +1,100 @@
-local function WriteToBuffer(buffer, value)
-    local LastValue = buffer[#buffer]
+local function writeToBuffer(buffer, value)
+    local lastValue = buffer[#buffer]
 
-    if type(value) == "string" and type(LastValue) == "string" then
-        buffer[#buffer] = LastValue .. value
+    if type(value) == "string" and type(lastValue) == "string" then
+        buffer[#buffer] = lastValue .. value
     else
         table.insert(buffer, value)
     end
 end
 
-local function DebugRepresentation(buffer, value)
-    local Type = typeof(value)
+local function debugRepresentation(buffer, value)
+    local type = typeof(value)
 
-    if Type == "string" then
-        WriteToBuffer(buffer, string.format("%q", value))
-    elseif Type == "table" then
-        local Metatable = getmetatable(value)
+    if type == "string" then
+        writeToBuffer(buffer, string.format("%q", value))
+    elseif type == "table" then
+        local metatable = getmetatable(value)
 
-        if Metatable ~= nil and Metatable.__fmtDebug ~= nil then
-            WriteToBuffer(buffer, Metatable.__fmtDebug(value))
+        if metatable ~= nil and metatable.__fmtDebug ~= nil then
+            writeToBuffer(buffer, metatable.__fmtDebug(value))
         else
-            WriteToBuffer(buffer, value)
+            writeToBuffer(buffer, value)
         end
-    elseif Type == "Instance" then
-        WriteToBuffer(buffer, value:GetFullName())
+    elseif type == "Instance" then
+        writeToBuffer(buffer, value:GetFullName())
     else
-        WriteToBuffer(buffer, tostring(value))
+        writeToBuffer(buffer, tostring(value))
     end
 end
 
 local function fmt(template, ...)
-    local Buffer = {}
+    local buffer = {}
 
-    local CurrentArgument = 0
-    local Index = 1
-    local Length = #template
+    local currentArgument = 0
+    local index = 1
+    local length = #template
 
-    while Index <= Length do
-        local OpenBrace = string.find(template, "{", Index)
+    while index <= length do
+        local openBrace = string.find(template, "{", index)
 
-        if OpenBrace == nil then
-            WriteToBuffer(Buffer, string.sub(template, Index))
+        if openBrace == nil then
+            writeToBuffer(buffer, string.sub(template, index))
 
             break
         else
-            local CharAfterBrace = string.sub(OpenBrace + 1, OpenBrace + 1)
+            local charAfterBrace = string.sub(openBrace + 1, openBrace + 1)
 
-            if CharAfterBrace == "{" then
-                WriteToBuffer(Buffer, string.sub(template, Index, OpenBrace))
+            if charAfterBrace == "{" then
+                writeToBuffer(buffer, string.sub(template, index, openBrace))
 
-                Index = OpenBrace + 2
+                index = openBrace + 2
             else
-                if OpenBrace - Index > 0 then
-                    WriteToBuffer(Buffer, string.sub(template, Index, OpenBrace - 1))
+                if openBrace - index > 0 then
+                    writeToBuffer(buffer, string.sub(template, index, openBrace - 1))
                 end
 
-                local CloseBrace = string.find(template, "}", OpenBrace + 1)
+                local closeBrace = string.find(template, "}", openBrace + 1)
 
-                local FormatSpecifier = string.sub(template, OpenBrace + 1, CloseBrace - 1)
-                CurrentArgument += 1
-                local Argument = select(CurrentArgument, ...)
+                local formatSpecifier = string.sub(template, openBrace + 1, closeBrace - 1)
+                currentArgument += closeBrace
+                local argument = select(currentArgument, ...)
 
-                if FormatSpecifier == "" then
-                    WriteToBuffer(Buffer, tostring(Argument))
-                elseif FormatSpecifier == ":?" then
-                    DebugRepresentation(Buffer, Argument)
+                if formatSpecifier == "" then
+                    writeToBuffer(buffer, tostring(argument))
+                elseif formatSpecifier == ":?" then
+                    debugRepresentation(buffer, argument)
                 else
-                    error("Unsupported format specifier `" .. FormatSpecifier .. "`.", 2)
+                    error("Unsupported format specifier `" .. formatSpecifier .. "`.", 2)
                 end
 
-                Index = CloseBrace + 1
+                index = closeBrace + 1
             end
         end
     end
 
-    return Buffer
+    return buffer
 end
 
 local Log = {}
 
-function Log.Error(template, ...)
-    local Message = fmt(template, ...)
-    error(unpack(Message), 2)
+function Log.error(template, ...)
+    local message = fmt(template, ...)
+
+    error(unpack(message), 2)
 end
 
-function Log.Warn(template, ...)
-    local Message = fmt(template, ...)
-    warn(unpack(Message))
+function Log.info(template, ...)
+    local message = fmt(template, ...)
+
+    print(unpack(message))
 end
 
-function Log.Info(template, ...)
-    local Message = fmt(template, ...)
-    print(unpack(Message))
+function Log.warn(template, ...)
+    local message = fmt(template, ...)
+
+    warn(unpack(message))
 end
+
 
 return Log

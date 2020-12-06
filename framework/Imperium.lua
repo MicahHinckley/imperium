@@ -2,62 +2,66 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Asink = require(ReplicatedStorage.Shared.Imperium.Asink)
 
-local function InitializeSystem(system)
-    local Future, Resolve = Asink.Future.new()
+local function initializeSystem(system)
+    local future, resolve = Asink.Future.new()
 
     Asink.Runtime.exec(function()
         system:Initialize()
-        Resolve()
+        resolve()
     end)
 
-    return Future
+    return future
 end
 
-local function InitializeSystems(systems)
-    local Future, Resolve = Asink.Future.new()
+local function initializeSystems(systemsRoot)
+    local future, resolve = Asink.Future.new()
 
     Asink.Runtime.exec(function()
-        local SystemCache = {}
-        local InitializeJobs = {}
+        local systemCache = {}
+        local initializeJobs = {}
 
-        for _,descendant in ipairs(systems:GetChildren()) do
-            if descendant:IsA("ModuleScript") and descendant:FindFirstAncestorOfClass("ModuleScript") == nil then
-                local System = require(descendant)
+        local function initializeSystemsInRoot(root)
+            for _,child in ipairs(root:GetChildren()) do
+                if child:IsA("ModuleScript") then
+                    local system = require(child)
     
-                if System.Initialize ~= nil then
-                    local InitializeJob = InitializeSystem(System)
-
-                    table.insert(InitializeJobs, InitializeJob)
+                    if system.initialize ~= nil then
+                        table.insert(initializeJobs, initializeSystem(system))
+                    end
+    
+                    table.insert(systemCache, system)
+                else
+                    initializeSystemsInRoot(child)
                 end
-    
-                table.insert(SystemCache, System)
             end
         end
 
-        Future.all(InitializeJobs):await()
+        initializeSystemsInRoot(systemsRoot)
 
-        Resolve(SystemCache)
+        future.all(initializeJobs):await()
+
+        resolve(systemCache)
     end)
 
-    return Future
+    return future
 end
 
 local Imperium = {}
 
-function Imperium:Start(systems)
-    local Future = InitializeSystems(systems)
+function Imperium.start(systems)
+    local future = initializeSystems(systems)
 
-    Future:map(function(systemCache)
+    future:map(function(systemCache)
         for _,system in ipairs(systemCache) do
-            if system.Start ~= nil then
+            if system.start ~= nil then
                 Asink.Runtime.exec(function()
-                    system:Start()
+                    system:start()
                 end)
             end
         end
     end)
 
-    return Future
+    return future
 end
 
 return Imperium

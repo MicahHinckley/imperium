@@ -1,12 +1,11 @@
---< Module >--
 local System = {}
 
-function System:Initialize()
-    self.Initialized = true
+function System:initialize()
+    self.initialized = true
 end
 
-function System:Start()
-    self.Started = true
+function System:start()
+    self.started = true
 end
 
 return System

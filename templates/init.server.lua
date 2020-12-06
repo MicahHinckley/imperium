@@ -1,13 +1,10 @@
---< Services >--
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
---< Modules >--
 local Imperium = require(ReplicatedStorage.Imperium)
 local Import = require(ReplicatedStorage.Import)
 
---< Start >--
-Import.AddLocation(ServerScriptService.Server)
-Import.AddLocation(ReplicatedStorage.Shared)
+Import.addLocation(ServerScriptService.Server)
+Import.addLocation(ReplicatedStorage.Shared)
 
-Imperium:Start(ServerScriptService.Server.Source.Systems)
+Imperium.start(ServerScriptService.Server.Source.Systems)
