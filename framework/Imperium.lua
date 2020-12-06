@@ -1,10 +1,7 @@
---< Services >--
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
---< Modules >--
 local Asink = require(ReplicatedStorage.Shared.Imperium.Asink)
 
---< Functions >--
 local function InitializeSystem(system)
     local Future, Resolve = Asink.Future.new()
 
@@ -45,7 +42,6 @@ local function InitializeSystems(systems)
     return Future
 end
 
---< Module >--
 local Imperium = {}
 
 function Imperium:Start(systems)

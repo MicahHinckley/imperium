@@ -1,4 +1,3 @@
---< Functions >--
 local function WriteToBuffer(buffer, value)
     local LastValue = buffer[#buffer]
 
@@ -77,7 +76,6 @@ local function fmt(template, ...)
     return Buffer
 end
 
---< Module >--
 local Log = {}
 
 function Log.Error(template, ...)
