@@ -11,6 +11,7 @@
           "$path": "dependencies/imperium/framework/shared",
 
           "Asink": {"$path": "dependencies/asink/src"},
+          "Flipper": {"$path": "dependencies/flipper/src"},
           "Fmt": {"$path": "dependencies/fmt/src"},
           "t": {"$path": "dependencies/t/lib"},
           "Roact": {"$path": "dependencies/roact/src"},

@@ -40,6 +40,7 @@ fn try_add_dependencies(path: &Path) -> Result<(), Error> {
     try_add_dependency(path, "dependencies/roact-rodux", "https://github.com/Roblox/roact-rodux")?;
     try_add_dependency(path, "dependencies/t", "https://github.com/osyrisrblx/t")?;
     try_add_dependency(path, "dependencies/asink", "https://github.com/LPGhatguy/asink")?;
+    try_add_dependency(path, "dependencies/flipper", "https://github.com/Reselim/Flipper")?;
 
     Ok(())
 }
