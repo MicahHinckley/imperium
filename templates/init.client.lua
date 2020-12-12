@@ -6,11 +6,11 @@ if game:IsLoaded() == false then
 end
 
 local Imperium = require(ReplicatedStorage.Imperium)
-local Import = require(ReplicatedStorage.Import)
+local import = require(ReplicatedStorage.import)
 
 local client = Players.LocalPlayer.PlayerScripts.Client
 
-Import.addLocation(client)
-Import.addLocation(ReplicatedStorage.Shared)
+import.addLocation(client)
+import.addLocation(ReplicatedStorage.Shared)
 
 Imperium.start(client.Source.Systems)
