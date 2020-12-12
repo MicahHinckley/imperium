@@ -6,7 +6,7 @@ local function initializeSystem(system)
     local future, resolve = Asink.Future.new()
 
     Asink.Runtime.exec(function()
-        system:Initialize()
+        system:initialize()
         resolve()
     end)
 

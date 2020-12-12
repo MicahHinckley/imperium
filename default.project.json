@@ -9,7 +9,8 @@
         "Imperium": {
           "$path": "framework/shared",
 
-          "Asink": {"$path": "dependencies/asink/src"}
+          "Asink": {"$path": "dependencies/asink/src"},
+          "Fmt": {"$path": "dependencies/fmt/src"}
         }
       },
       "Imperium": {"$path": "framework/Imperium.lua"},
