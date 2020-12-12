@@ -34,10 +34,12 @@ fn try_add_dependency(root: &Path, path: &str, link: &str) -> Result<(), Error> 
 fn try_add_dependencies(path: &Path) -> Result<(), Error> {
     try_add_dependency(path, "dependencies/imperium", "https://github.com/Nezuo/imperium")?;
     try_add_dependency(path, "dependencies/import", "https://github.com/Nezuo/import")?;
+    try_add_dependency(path, "dependencies/fmt", "https://github.com/Nezuo/fmt")?;
     try_add_dependency(path, "dependencies/roact", "https://github.com/Roblox/roact")?;
     try_add_dependency(path, "dependencies/rodux", "https://github.com/Roblox/rodux")?;
     try_add_dependency(path, "dependencies/roact-rodux", "https://github.com/Roblox/roact-rodux")?;
     try_add_dependency(path, "dependencies/t", "https://github.com/osyrisrblx/t")?;
+    try_add_dependency(path, "dependencies/asink", "https://github.com/LPGhatguy/asink")?;
 
     Ok(())
 }
