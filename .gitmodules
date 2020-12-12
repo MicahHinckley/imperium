@@ -4,3 +4,6 @@
 [submodule "dependencies/testez"]
 	path = dependencies/testez
 	url = https://www.github.com/Roblox/testez
+[submodule "dependencies/fmt"]
+	path = dependencies/fmt
+	url = https://github.com/Nezuo/fmt
