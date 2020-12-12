@@ -13,4 +13,4 @@ local client = Players.LocalPlayer.PlayerScripts.Client
 import.addLocation(client)
 import.addLocation(ReplicatedStorage.Shared)
 
-Imperium.start(client.Source.Systems)
+Imperium.start(client.Systems)

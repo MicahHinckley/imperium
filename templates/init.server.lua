@@ -7,4 +7,4 @@ local import = require(ReplicatedStorage.import)
 import.addLocation(ServerScriptService.Server)
 import.addLocation(ReplicatedStorage.Shared)
 
-Imperium.start(ServerScriptService.Server.Source.Systems)
+Imperium.start(ServerScriptService.Server.Systems)
