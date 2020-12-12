@@ -1,5 +1,6 @@
 {
   "name": "replace",
+  "globIgnorePaths": ["dependencies/*.spec.lua"],
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
